@@ -21,10 +21,27 @@
       Making the POST api call to `https://api.digitalocean.com/v2/droplets` will create a new droplet in a given region, with specified imageId and ssh key id.  
    * SSH into droplet:   
         Now, you can SSH into newly created droplet with the IP address (without requiring password).  
+   * Here is the [Node JS code](digitalocean.js) for provisioning server.
 
-## Provisioning Amazon AWS EC2 Instance Server:  
-  ### Using Baker:   
-   * Here is my [baker.yml file](/ComputingEnvironment/baker.yml).     
+------------------------------------------------------------  
+## Provisioning Amazon AWS EC2 Instance Server:     
+   * Loading AWS Credentials from the shared credentials file:  
+        * Keep your AWS credentials data in a shared file used by SDKs and the command line interface. The SDK for JavaScript automatically searches the shared credentials file for credentials when loading. Where you keep the shared credentials file depends on your operating system:  
+      
+       Linux, Unix, and macOS users: ~/.aws/credentials  
+       Windows users: C:\Users\USER_NAME\.aws\credentials  
+      
+         ```
+         [default]
+         aws_access_key_id = <YOUR_ACCESS_KEY_ID>
+         aws_secret_access_key = <YOUR_SECRET_ACCESS_KEY>
+         ```
+        * In node js, 
+        ```
+        var credentials = new AWS.SharedIniFileCredentials({profile: 'work-account'});
+        AWS.config.credentials = credentials;
+        ```
+
    * Here is the [screencast](https://youtu.be/g_Pa-OYKTzw) demonstrating the creation of Virtual Machine, installing the NodeJS in it and synced folder.  
    * The following steps are to be done in order to perform the above task:  
       1. Install the Baker using homebrew.
