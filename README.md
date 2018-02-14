@@ -4,7 +4,6 @@
 ------------------------------------------------------------
 
 ## Provisioning DigitalOcean Droplet Server:  
-* **Setup Steps**:  
   * DigitalOcen API Token Setup:  
       * Generate personal access token from the DigitalOcean account to access the [DigitalOcean API (https://developers.digitalocean.com/documentation/v2/).  
       * Now, set this token as your environment variable:  
@@ -21,49 +20,35 @@
       Making the POST api call to `https://api.digitalocean.com/v2/droplets` will create a new droplet in a given region, with specified imageId and ssh key id.  
    * SSH into droplet:   
         Now, you can SSH into newly created droplet with the IP address (without requiring password).  
-   * Here is the [Node JS code](digitalocean.js) for provisioning server.
+   * Add this node into your inventory file with specified private SSH key file path.    
+   * Here is the [Node JS code](digitalocean.js) for provisioning DigitalOcean Droplet / server.
 
 ------------------------------------------------------------  
 ## Provisioning Amazon AWS EC2 Instance Server:     
    * Loading AWS Credentials from the shared credentials file:  
         * Keep your AWS credentials data in a shared file used by SDKs and the command line interface. The SDK for JavaScript automatically searches the shared credentials file for credentials when loading. Where you keep the shared credentials file depends on your operating system:  
       
-       Linux, Unix, and macOS users: ~/.aws/credentials  
-       Windows users: C:\Users\USER_NAME\.aws\credentials  
-      
          ```
-         [default]
-         aws_access_key_id = <YOUR_ACCESS_KEY_ID>
-         aws_secret_access_key = <YOUR_SECRET_ACCESS_KEY>
+          Linux, Unix, and macOS users: ~/.aws/credentials  
+          Windows users: C:\Users\USER_NAME\.aws\credentials  
          ```
-        * In node js, 
+         ```
+          [default]
+          aws_access_key_id = <YOUR_ACCESS_KEY_ID>
+          aws_secret_access_key = <YOUR_SECRET_ACCESS_KEY>
+         ```
+        * In nodejs application,  
         ```
-        var credentials = new AWS.SharedIniFileCredentials({profile: 'work-account'});
-        AWS.config.credentials = credentials;
+         var credentials = new AWS.SharedIniFileCredentials({profile: 'default'});
+         AWS.config.credentials = credentials;
         ```
 
-   * Here is the [screencast](https://youtu.be/g_Pa-OYKTzw) demonstrating the creation of Virtual Machine, installing the NodeJS in it and synced folder.  
-   * The following steps are to be done in order to perform the above task:  
-      1. Install the Baker using homebrew.
-       `brew install ottomatica/ottomatica/baker` 
-      2. Setup the baker sever, to manage the Baker environments in machine.  
-       `baker setup`  
-      3. Create a simple Baker file that creates a VM at a given IP address and also install nodejs in your VM.  
-  
-       ```
-            #baker.yml
-            ---
-            name: baker-computing   
-             vm:  
-              ip: 192.168.22.19  
-             lang:   
-               - nodejs9  
-       ```      
-       4. To Bake the virtual machine called `baker-computing`, the bake2 command is used with the `baker.yml` file path.   
-        `baker bake2 --local`   
-       5. After Baker finishes creating the VM, ssh to VM using `ssh` command.    
-        `baker ssh baker-computing`  
-       6. The directory where `baker.yml` is placed in local machine, becomes the synced folder in the VM.   
+   * Create *Security Group* for the EC2 instance first and give the inbound ip address to accept the SSH connections from your specified hosts. Here, `0.0.0.0/0` ip is defined to accept the SSH connection from all hosts.    
+   * Create the *Key Pair* for the EC2 instance and store the private key generated into your host machine; for direct SSH connection to your EC2 instance.  
+   * Create the EC2 instance with the above created Security Group and KeyPair; which will return public DNS name for the server.  
+   * Add this node into your inventory file with specified private SSH key file path.   
+   * SSH into EC2 instance with this stored private SSH key.   
+   * Here is the [Node JS code](aws.js) for provisioning AWS EC2 instance / server.
       
       
 ### **Using Vagrant:**  
