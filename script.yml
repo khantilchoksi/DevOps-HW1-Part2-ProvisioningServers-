@@ -1,0 +1,34 @@
+---
+- hosts: all
+  gather_facts: False
+  sudo: yes
+  
+  tasks:
+   - name: install python 2
+     raw: test -e /usr/bin/python || (sudo apt -y update && sudo apt install -y python-minimal)
+     
+   - name: Install git
+     apt: pkg=git state=present update_cache=yes cache_valid_time=22000
+     become: yes
+   
+   - name: Install maven (and other packages if needed)
+     become: yes
+     apt: pkg=maven state=latest update_cache=yes cache_valid_time=3600
+
+   - name: Install java 8 preresequesits
+     apt: name=python-software-properties
+     become: yes
+
+   - name: Add Java 8 repository
+     apt_repository: repo='ppa:webupd8team/java'
+
+   - name: Agree to oracle license
+     debconf: name=oracle-java8-installer question=shared/accepted-oracle-license-v1-1 vtype=select value=true
+
+   - name: install java 8
+     apt: name=oracle-java8-installer state=latest update-cache=yes force=yes
+
+     # emit a debug message with each package
+
+
+     
