@@ -127,34 +127,16 @@ open https://android.com
           2. **Scalability is still an issue:** Unless you deploy several master servers and keep them in sync, that one master will start getting swamped as you add more and more clients and thus will become bottleneck.  
    
  #### 4. What are some of the consquences of not having proper configuration management?    
-  * More cost , less productivity
+  * More cost , less productivity  
+  * If we don't have a proper configuration management, we won't have a well-ordered system in place, which leads to a developer should not be able to see all of the past system implementations of the business, and can't help to better address future needs and changes to keep the system up to date and running smoothly.  
+  * An unreliable system that is constantly down and needing repairs because of a company’s configuration management team is lacking in organization and pro-activeness. If the configuration management is done properly, it should run like the well-oiled machine that it is, ensuring that every department in the company can get their jobs done properly. Increased stability and efficiency of the system will is directly dependent on the proper configuration management of the system.  
+  * Proper Configuration Management saves cost with the constant system maintenance, record keeping, and checks and balances to prevent repetition and mistakes, bugs. The organized record keeping of the system itself saves time for developers and reduces wasted money for the company with less money being spent on fixing recurring or nonsensical issues. With an updated system, there is also reduction in risks of potential lawsuits for breaches of security because of outdated software framework, which could possibly be attributed to negligence. 
  
  
- 
-  * Here is the [screencast](https://youtu.be/SrlqOcZf6qE) demonstrating the simple pipelines.    
-  * The following steps are done in order to perform the above task: 
-   1. `App` directory contains the cloned repo; which is basically your development directory. 
-   2. Create an endpoint for our deployment, by creating the following directory structure.  
-   ```
-   deploy/
-     production.git/  
-     production-www/  
-   ```  
-   3. A `bare` git repository is created under `production.git`, that will always have files that reflect the most current state of the repo.  
-   `deploy/production-www/ :> git init --bare`  
-   4. A `post-receive` hook file has been created at `production.git/hooks`.  It includes the commands to checkout to the production directory, and then install nodejs and starting the server. Also, provide the `post-receive` executable permissions.
-   ```
-   #!/bin/sh
-   GIT_WORK_TREE=deploy/production-www/ git checkout -f
-   echo "Pushed to production"
-   cd /deploy/production-www/
-   npm install
-   node main.js 9090  
-   ```  
-   5. Now, set the remote production to App repository.   
-   `git remote add prod file://deploy/production.git`  
-   6. Then, after any commit, pushing the changes to the production directory's master branch:   
-   `git push prod master`  
-   7. You can see the changes reflected in `production-www`, i.e. your production environment.  
+### Quick Links:  
+  * Vagrant File of VM
+  * Node JS code for provisioning DigitalOcean server:  
+  * Node JS code for provisionig Amazon AWS server:  
+  * Screencast
 
 **Thank you!**  
