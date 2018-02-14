@@ -97,7 +97,8 @@ open https://android.com
     * We can make ansible playbook tasks indempotent easily with some provisions.
   * **Examples of Non - Indempotent Operations:**
       *  It is possible that a sequence of several requests is non-idempotent, even if all of the methods executed in that sequence are idempotent. (A sequence is idempotent if a single execution of the entire sequence always yields a result that is not changed by a reexecution of all, or part, of that sequence.) For example, a sequence is non-idempotent if its result depends on a value that is later modified in the same sequence.  
-      * HTTP POST request can be considered as non-indempotent operation in the context that, everytime you trigger the POST request, it is going to add the new data entry in your database.  
+      * HTTP POST request can be considered as non-indempotent operation in the context that, everytime you trigger the POST request, it is going to add the new data entry in your database. 
+      * PATCH is non-idempotent.
       * Another example is, `ssh-keyscan -H >> ~/.ssh/known_hosts` command for creating SSH fingerprint is not idempotent.   
       
       
@@ -108,8 +109,25 @@ open https://android.com
   * We can also maintain groups inside the inventory, but after that chaning the node from one group to another will have consequent effects.  
   
  #### 3. Describe two configuration models. What are disadvantages and advantages of each model?    
-   * Configuration Models: 
- #### 4. What are some of the consquences of not having proper configuration management?  
+   * Configuration Models:   
+   * **Push Model:** Push deployments by running remote commands via ssh on a set of servers.  
+      * **Advantages:**  
+          1. **Control:** Everything is synchronous, and under your control. You can see right away is something went wrong, and you can correct it immediately.  
+          2. **Simplicity:** In the case of Fabric(push based configuration management system), a 'fabfile' is just a collection of Python functions that copy files over to a remote server and execute commands over ssh on that server; it's all very easy to set up and run.  
+      * **Disadvantages:**  
+          1. **Lack of full automation:** It's not usually possible to boot a server and have it configure itself without some sort of client/server protocol which push systems don't generally support.  
+          2. **Lack of scalability:** When you're dealing with hundreds of servers, a push system starts showing its limits, unless it makes heavy use of threading or multi-processing.     
+          
+   * **Pull Model:** In pull system, you have a server which acts as a master, and clients which contact the master to find out what they need to do, thus pulling their configuration information from the master. e.g. The systems like Puppet and Chef use a pull-based approach: clients poll a centralized master periodically for updates.    
+      * **Advantages:**  
+          1. **Full automation capabilities:** It is possible, and indeed advisable, to fully automate the configuration of a newly booted server using a pull deployment system. Using the puppet configuration management system, we can do that.  
+          2. **Increased scalability:** In a pull system, clients contact the server independently of each other, so the system as a whole is more scalable than a push system.  
+      * **Disadvantages:**  
+          1. **Proprietary configuration management language:**  Most  pull system use their own proprietary way of specifying the configuration to be deployed. e.g. Puppet's language looks like a cross between Perl and Ruby, while bcfg2 uses...gasp...XML); this turns out to be a pretty big drawback, because if you're not using the system on a daily basis, you're guaranteed to forget it. Exception: Chef, which uses pure Ruby for its configuration recipes.
+          2. **Scalability is still an issue:** Unless you deploy several master servers and keep them in sync, that one master will start getting swamped as you add more and more clients and thus will become bottleneck.  
+   
+ #### 4. What are some of the consquences of not having proper configuration management?    
+  * More cost , less productivity
  
  
  
