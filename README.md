@@ -2,7 +2,12 @@
 
 > **Name: Khantil Choksi, Unity ID: khchoksi.**  
 ------------------------------------------------------------
+## Architecture Diagram: 
 
+ * ![img](/Architecture.png)
+ 
+ * [Vagrant file](Vagrantfile) for configuring VM.  
+------------------------------------------------------------
 ## Provisioning DigitalOcean Droplet Server:  
   * DigitalOcen API Token Setup:  
       * Generate personal access token from the DigitalOcean account to access the [DigitalOcean API (https://developers.digitalocean.com/documentation/v2/).  
@@ -48,62 +53,18 @@
    * Create the EC2 instance with the above created Security Group and KeyPair; which will return public DNS name for the server.  
    * Add this node into your inventory file with specified private SSH key file path.   
    * SSH into EC2 instance with this stored private SSH key.   
-   * Here is the [Node JS code](aws.js) for provisioning AWS EC2 instance / server.
-      
-      
-### **Using Vagrant:**  
- * Here is my [Vagrantfile](/ComputingEnvironment/Vagrantfile).     
- * Here is the [screencast](https://youtu.be/EfQ_dzlBBmQ) demonstrating the creation of Virtual Machine, installing the NodeJS in it and synced folder.  
- * The following steps are done in order to perform the above task:  
-     1. Initialize the virtual machine.
-       `vagrant init ubuntu/trusty64` 
-     2. Make necessary changes in `Vagrantfile` 
-        1. To setup the private network:  
-        `config.vm.network "private_network", ip: "192.168.33.19"`  
-        2. To enable the synced folder, which allows to edit the files from the host machine.  
-        `config.vm.synced_folder "/ComputingWorkshop/local_data", "/home/vagrant/syncdata"` 
-        3. Fixing the DNS to use the same as your host OS instead of its own.    
-        ```
-        config.vm.provider :virtualbox do |vb|  
-         # fix crappy dns 
-         vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]    
-        end    
-        ```  
-        4. Enable provisioning with a shell script.  
-        ```  
-        config.vm.provision "shell", inline: <<-SHELL
-          apt-get update
-          apt-get install -y node
-          apt-get install -y nodejs-legacy
-        SHELL   
-        ```   
-     3. Start up the virtual machine.  
-     `vagrant up`  
-     4. Connect to the machine.  
-     `vagrant ssh`  
+   * Here is the [Node JS code](aws.js) for provisioning AWS EC2 instance / server.  
+   
+ -------------------------------------------------------------------------------------
+ 
+## Ansible Script for configuration management:  
 
-## Pipeline  
- ### **Hooks:**   
-  * Here is my [post-commit file](/Hooks/post-commit).     
-  * Here is the [screencast](https://youtu.be/jqxHrFAYi4M) demonstrating the hooks.    
-  * The following steps are done in order to perform the above task:  
-```
-#!/bin/bash
-open https://android.com
-```  
-
- 1. Create a local repository in the present working directory.  
- `git init`  
- 2. Create a post-commit file in the hooks.  
- `nano ./.git/hooks/post-commit`  
- 3. Unix/Linux shell knows what kind of interpreter to run the following commands, here it is Bourne Again Shell.  
- `#!/bin/bash`  
- 4. Then command `open https://android.com`    
- 5. `chmod` is used to change the permission of the files like read, write and executable, here I am changing the post-commit file to give executable permissions.  
- `chmod u+x post-commit`     
- 6. Now, whenever, we commit something to this repo, the `post-commit` hooks file will be executed.  
+ * [Ansible script](script.yml) to install Maven, Git, NodeJS, and Java8 to both the provisioned server. 
 
 --------------------------------------------------------------------------------------  
+ ## [Screencast: Demoing the creation of two servers and configuring them.](https://youtu.be/wpkMLsmGV5c) 
+--------------------------------------------------------------------------------------  
+
  ## Concepts:      
  #### 1. Define idempotency. Give two examples of an idempotent operation and non-idempotent operation.    
   * **Indepotency:** Indepotency of the operations mean that they can be applied multiple times without changing the result beyond the inital application, i.e. applying the same operation multiple times which results in the same final state of the system.  
