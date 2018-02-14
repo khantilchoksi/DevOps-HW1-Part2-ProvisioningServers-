@@ -3,8 +3,7 @@
 > **Name: Khantil Choksi, Unity ID: khchoksi.**  
 ------------------------------------------------------------
 ## Architecture Diagram: 
-
- * ![img](/Architecture.png)
+![img](/Architecture.png)
  
  * [Vagrant file](Vagrantfile) for configuring VM.  
 ------------------------------------------------------------
@@ -14,9 +13,9 @@
       * Now, set this token as your environment variable:  
         ```
         # Mac/Linux
-        export DIGITALOCEANTOKEN="xxx"
+        export DIGITALOCEANTOKEN="YOUR_DIGITAL_OCEAN_TOKEN"
         # Windows
-        setx DIGITALOCEANTOKEN xxx
+        setx DIGITALOCEANTOKEN "YOUR_DIGITAL_OCEAN_TOKEN"
         ```  
   * SSH Keys:  
       * Create a new SSH Keys using `ssh-keygen -t rsa` in your host machine.  
@@ -55,12 +54,13 @@
    * SSH into EC2 instance with this stored private SSH key.   
    * Here is the [Node JS code](aws.js) for provisioning AWS EC2 instance / server.  
    
- -------------------------------------------------------------------------------------
+ -------------------------------------------------------------------------------------  
  
 ## Ansible Script for configuration management:  
 
- * [Ansible script](script.yml) to install Maven, Git, NodeJS, and Java8 to both the provisioned server. 
-
+ * [Inventory File](inventory) created from above node js code.
+ * [Ansible Script](script.yml) to install Maven, Git, NodeJS, and Java8 to both the provisioned server.    
+ 
 --------------------------------------------------------------------------------------  
  ## [Screencast: Demoing the creation of two servers and configuring them.](https://youtu.be/wpkMLsmGV5c) 
 --------------------------------------------------------------------------------------  
@@ -85,6 +85,7 @@
   * Everytime we have a new provisioned server, we have to update our node entry in the inventory file.  
   * Moreover, the each node entry in the inventory file includes the `ansible_ssh_private_key_file` path. So, in-case if we change the location of `inventory` file or the keys of each node, we have to update the inventory file accordingly.  
   * Additionaly, for the same sever, if there exists many users, we have to manage the different node entries for each user `ansible_ssh_user`.  
+  * If we have many servers, maintaining such large entries of nodes in inventory file is cumbersome task.  
   * We can also maintain groups inside the inventory, but after that chaning the node from one group to another will have consequent effects.  
   
  #### 3. Describe two configuration models. What are disadvantages and advantages of each model?    
@@ -105,17 +106,17 @@
           1. **Proprietary configuration management language:**  Most  pull system use their own proprietary way of specifying the configuration to be deployed. e.g. Puppet's language looks like a cross between Perl and Ruby, while bcfg2 uses...gasp...XML); this turns out to be a pretty big drawback, because if you're not using the system on a daily basis, you're guaranteed to forget it. Exception: Chef, which uses pure Ruby for its configuration recipes.
           2. **Scalability is still an issue:** Unless you deploy several master servers and keep them in sync, that one master will start getting swamped as you add more and more clients and thus will become bottleneck.  
    
- #### 4. What are some of the consquences of not having proper configuration management?    
-  * More cost , less productivity  
+ #### 4. What are some of the consquences of not having proper configuration management?     
   * If we don't have a proper configuration management, we won't have a well-ordered system in place, which leads to a developer should not be able to see all of the past system implementations of the business, and can't help to better address future needs and changes to keep the system up to date and running smoothly.  
   * An unreliable system that is constantly down and needing repairs because of a company’s configuration management team is lacking in organization and pro-activeness. If the configuration management is done properly, it should run like the well-oiled machine that it is, ensuring that every department in the company can get their jobs done properly. Increased stability and efficiency of the system will is directly dependent on the proper configuration management of the system.  
   * Proper Configuration Management saves cost with the constant system maintenance, record keeping, and checks and balances to prevent repetition and mistakes, bugs. The organized record keeping of the system itself saves time for developers and reduces wasted money for the company with less money being spent on fixing recurring or nonsensical issues. With an updated system, there is also reduction in risks of potential lawsuits for breaches of security because of outdated software framework, which could possibly be attributed to negligence. 
  
  
 ### Quick Links:  
-  * Vagrant File of VM
-  * Node JS code for provisioning DigitalOcean server:  
-  * Node JS code for provisionig Amazon AWS server:  
-  * Screencast
+  * [Vagrant File of VM](Vagrantfile)
+  * [Node JS code for provisioning DigitalOcean server](digitalocean.js)    
+  * [Node JS code for provisionig Amazon AWS server](aws.js)  
+  * [Ansible Script for configuration](script.yml)
+  * [Screencast](https://youtu.be/wpkMLsmGV5c)  
 
 **Thank you!**  
