@@ -4,7 +4,23 @@
 ------------------------------------------------------------
 
 ## Provisioning DigitalOcean Droplet Server:  
-* **Setup Steps**:
+* **Setup Steps**:  
+  * DigitalOcen API Token Setup:  
+      * Generate personal access token from the DigitalOcean account to access the [DigitalOcean API (https://developers.digitalocean.com/documentation/v2/).  
+      * Now, set this token as your environment variable:  
+        ```
+        # Mac/Linux
+        export DIGITALOCEANTOKEN="xxx"
+        # Windows
+        setx DIGITALOCEANTOKEN xxx
+        ```  
+  * SSH Keys:  
+      * Create a new SSH Keys using `ssh-keygen -t rsa` in your host machine.  
+      * DigitalOcean allows us to add SSH public keys to the interface so that you can embed your public key into a Droplet at the time of creation. Only the public key is required to take advantage of this functionality. For this, make a `POST` api call to `https://api.digitalocean.com/v2/account/keys` to add SSH key to your digital ocean account. In response, the received key id is used while creating the droplet.  
+   * Creating Droplet: 
+      Making the POST api call to `https://api.digitalocean.com/v2/droplets` will create a new droplet in a given region, with specified imageId and ssh key id.  
+   * SSH into droplet:   
+        Now, you can SSH into newly created droplet with the IP address (without requiring password).  
 
 ## Provisioning Amazon AWS EC2 Instance Server:  
   ### Using Baker:   
