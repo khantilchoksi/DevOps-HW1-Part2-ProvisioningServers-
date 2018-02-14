@@ -10,6 +10,10 @@
    - name: Install git
      apt: pkg=git state=present update_cache=yes cache_valid_time=22000
      become: yes
+
+   - name: Install NodeJs
+     apt: pkg=nodejs state=present update_cache=yes cache_valid_time=20000
+     become: yes
    
    - name: Install maven (and other packages if needed)
      become: yes
